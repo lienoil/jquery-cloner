@@ -67,7 +67,7 @@ gulp.task('clean', function () {
 | @run  gulp default
 */
 gulp.task('default', ['clean'], function () {
-    gulp.start('sass', 'scripts');
+    gulp.start('scripts');
 });
 
 /*
@@ -81,10 +81,6 @@ gulp.task('watch', function () {
     // Watch any files in , reload on change
     // gulp.watch(['**']).on('change', livereload.changed);
 
-    // Watch .scss files
-    gulp.watch('resources/sass/**/*.scss', ['sass']);
     // Watch .js files
     gulp.watch('resources/scripts/**/*.js', ['scripts']);
-    // Watch image files
-    gulp.watch('resources/images/**/*', ['images']);
 });
