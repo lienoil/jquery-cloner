@@ -3,8 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>jQuery Cloner</title>
-
 	<style>
+		html, body {
+			margin: 0;
+			padding: 10px;
+			font-family: 'Open Sans', Roboto, Helvetica, Arial, sans-serif;
+		}
 		code {
 			background: #f1f1f1;
 			display: inline-block;
@@ -41,6 +45,7 @@
 			&lt;/div&gt;
 			&lt;br&gt;
 			&lt;button type="button" class="clonable-button-add"&gt;Add Attributes&lt;/button&gt;
+
 		&lt;/div&gt;
 	</code>
 	</pre>
@@ -55,7 +60,6 @@
 				<button type="button" class="clonable-button-close">Delete</button>
 				<br>
 				<br>
-
 			</div>
 			<br>
 			<button type="button" class="clonable-button-add">Add Attributes</button>
@@ -70,7 +74,11 @@
 	clonableContainer: '.clonable-block',
     clonable: '.clonable',
     addButton: '.clonable-button-add',
-    closeButton: '.clonable-close-button',
+    closeButton: '.clonable-button-close',
+	repeatableContainer: '.repeatable-block',
+    repeatable: '.repeatable',
+    addButton: '.repeatable-button-add',
+    closeButton: '.repeatable-close-button',
     focusableElement: 'input:first',
     clearValueOnClone: true,
     debug: false,
