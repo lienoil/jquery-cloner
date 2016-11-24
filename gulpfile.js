@@ -1,26 +1,26 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
-    jshint = require('gulp-jshint'),
+    // jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
-    livereload = require('gulp-livereload'),
+    // livereload = require('gulp-livereload'),
     del = require('del');
 
 var directories = {
     assets: {
-        js: 'assets/js',
+        js: 'assets',
     },
     build: {
-        js: 'build/js',
+        js: 'build',
     },
     dist: {
-        js: 'dist/js',
+        js: 'dist',
     },
     public: {
-        js: 'public/js',
+        js: 'public',
     },
     root: {
         js: 'js',
@@ -30,7 +30,7 @@ var directories = {
     }
 }
 
-var _name = 'jquery-cloner.js';
+var _name = 'jquery.cloner.js';
 
 /*
 | # Scripts
@@ -42,13 +42,13 @@ var _name = 'jquery-cloner.js';
 |
 */
 gulp.task('scripts', function () {
-    return gulp.src(directories.resources + '/**/*.js')
+    return gulp.src(directories.resources.js + '/*.js')
         .pipe(concat(_name))
-        .pipe(gulp.dest(directory.js.build))
+        .pipe(gulp.dest(directories.dist.js))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
-        .pipe(gulp.dest(directory.js.build))
-        .pipe(gulp.dest(directory.js.dist))
+        // .pipe(gulp.dest(directories.js.build))
+        .pipe(gulp.dest(directories.dist.js))
         .pipe(notify({ message: 'Completed compiling JS Files' }));
 });
 

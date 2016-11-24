@@ -2,7 +2,7 @@
 A jQuery plugin to clone HTML content
 
 ## Getting Started
-This guide will help you install and use jQuery Cloner. This see deployment for notes on how to deploy this plugin on frontend development on a live website.
+This guide will help you install and use jQuery Cloner. See deployment for notes on how to deploy this plugin on frontend development on a live website.
 
 ### Installation
 via bower:
@@ -37,7 +37,7 @@ A simple sample markup:
 <!-- jQuery is, of course, a dependency -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- Our main man here -->
-<script src="jquery-cloner/dist/jquery.cloner.min.js"></script>
+<script src="jquery-cloner/dist/jquery-cloner.min.js"></script>
 ```
 In the example above, the ```data-toggle="cloner"``` will automatically initialize our HTML.
 
