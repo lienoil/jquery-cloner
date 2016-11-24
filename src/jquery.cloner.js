@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.2.2
+ * v1.2.3
  *
  * @param  {Object} $
  * @param  {Object} document
