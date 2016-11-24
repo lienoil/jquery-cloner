@@ -212,7 +212,7 @@
         closeButton: '.clonable-button-close',
         focusableElement: 'input:first',
         clearValueOnClone: true,
-        debug: true,
+        debug: false,
 
         incrementName: 'clonable-increment',
         decrementName: 'clonable-decrement',
