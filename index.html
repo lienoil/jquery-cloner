@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jQuery Cloner</title>
+	<link rel="author" href="John Lioneil Dionisio">
+
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+	<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+	<section class="jumbotron jumbotron-primary">
+		<div class="container">
+			<a href="https://github.com/lioneil/jquery-cloner" class="pull-right"><i class="fa fa-github fa-3x"></i></a>
+			<div class="col-sm-10">
+				<h1 class="jumbotron-title"><i class="fa fa-clone">&nbsp;</i>jQuery Cloner</h1>
+				<p>A jQuery plugin to clone HTML content</p>
+				<small><span><i class="fa fa-tag">&nbsp;</i><code>v1.2.2</code></span></small>
+			</div>
+		</div>
+	</section>
+
+	<main class="main">
+		<div class="container">
+			<div class="col-sm-3">
+				<aside class="sidebar sidebar-sticky">
+					<nav class="list-group">
+						<a class="list-group-item" href="#getting-started">Getting Started</a>
+						<a class="list-group-item" href="#installation">Installation</a>
+						<a class="list-group-item" href="#usage">Usage</a>
+						<a class="list-group-item" href="#options">Options</a>
+						<a class="list-group-item" href="#deployment">Deployment</a>
+						<a class="list-group-item" href="#versioning">Versioning</a>
+						<a class="list-group-item" href="#authors">Authors</a>
+						<a class="list-group-item" href="#license">License</a>
+						<a class="list-group-item" href="#acknowledgment">Acknowledgment</a>
+					</nav>
+				</aside>
+			</div>
+			<div class="col-sm-9">
+				<section id="getting-started" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Getting Started</h1>
+							<p>This guide will help you install and use jQuery Cloner. See deployment for notes on how to deploy this plugin on frontend development on a live website.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="installation" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Installation</h1>
+							<p><strong>via bower: </strong> <code>bower install jquery-cloner</code></p>
+							<p><strong>via npm: </strong> <code>npm install jquery-cloner</code></p>
+							<p>or download or clone (pun!) on <a href="https://github.com/lioneil/jquery-cloner">GitHub</a>.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="usage" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Usage</h1>
+
+							<p>jQuery Cloner relies on classes and attributes to work.</p>
+							<p>A simple sample markup:</p>
+
+
+	<pre><code class="html">
+	&lt;!-- initialize jQuery-Cloner via the `data-toggle=cloner` attribute --&gt;
+	&lt;div class="clonable-block" <em><strong>data-toggle="cloner"</strong></em>&gt;
+	    &lt;div class="clonable" data-clone-number="1"&gt;
+	        &lt;label for="attr_1" class="clonable-increment-for"&gt;Attribute &lt;span class="clonable-increment-html"&gt;1&lt;/span&gt;&lt;/label&gt;
+			&lt;input id="attr_1" class="clonable-increment-id clonable-increment-name" type="text" name="attr[0]"&gt;
+			&lt;button type="button" class="clonable-button-close"&gt;Delete&lt;/button&gt;
+	    &lt;/div&gt;
+	    &lt;button class="clonable-button-add" type="button"&gt;Add Attributes&lt;/button&gt;
+	&lt;/div&gt;
+
+	&lt;!-- jQuery is, of course, a dependency --&gt;
+	&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"&gt;&lt;/script&gt;
+	&lt;!-- Our main man here --&gt;
+	&lt;script src="jquery-cloner/dist/jquery-cloner.min.js"&gt;&lt;/script&gt;
+	</code></pre>
+
+
+							<p>In the example above, the <code>data-toggle="cloner"</code> will <strong>automatically initialize</strong> our <code>clonable-block</code>.</p>
+							<p>Manual initialization, then, is as easy as:</p>
+
+
+	<pre>
+	<code class="js">
+	// main.js
+	(function ($) {
+	    $('#my-clonable-block').cloner();
+	})(jQuery);
+	</code>
+	</pre>
+
+
+						</div>
+					</div>
+				</section>
+
+				<section id="options" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Options</h1>
+							<p>The plugin have options you can modify. Below is the list of options with their default values:</p>
+
+
+	<pre><code>
+	$('#my-clonable-block').cloner({
+		clonableContainer: '.clonable-block',
+		clonable: '.clonable',
+		addButton: '.clonable-button-add',
+		closeButton: '.clonable-button-close',
+		focusableElement: 'input:first', // or any valid selector
+		clearValueOnClone: true, // or false
+		debug: false, // or true
+
+		incrementName: 'clonable-increment', // uses the suffixes -html, -id, and -{any attribute}.
+		decrementName: 'clonable-decrement', // #IMPORTANT: this option is unemplemented as of v1.1.0
+
+		beforeToggle: function (clone, index, self) {},
+		afterToggle: function (clone, index, self) {},
+	});
+	</code></pre>
+
+
+							<p><strong>clonableContainer</strong>- The class that should contain all our clonable elements, including the Add Button.</p>
+							<p><strong>clonable</strong>- The class of the clonable element. This is the html chunk that will be repeated.</p>
+							<p><strong>addButton</strong>- The class of the button that will fire the <code>toggle</code> method, prompting the cloning action.</p>
+							<p><strong>closeButton</strong>- The class of the button that will fire the <code>remove</code> method, prompting to remove the clonable element. <strong><em>Important</em></strong>: this element should be inside a <code>clonable</code> element.</p>
+							<p><strong>focusableElement</strong>- The attribute or input tag inside a newly cloned <code>clonable</code> to place the cursor over.</p>
+							<p><strong>clearValueOnClone</strong>- The plugin will clone the last instance of the <code>clonable</code> class. This option will toggle to remove or retain all previous input values.</p>
+							<p><strong>debug</strong>- Switch <code>console.log</code>ging on/off.</p>
+							<p><strong>incrementName</strong>- this option will increment all values inside a <code>clonable</code>. It uses suffixes (html, value, and any attribute like class, id, etc.) to know which integers will be incremented.</p>
+							<div class="row">
+								<div class="col-sm-11 col-sm-offset-1">
+									<p>Take the example below:</p>
+	<pre><code>
+	&lt;input id="attr_1" class="clonable-increment-id clonable-increment-name" type="text" name="attr[0]"&gt;
+	</code></pre>
+									<p>In this example, we have classes of <code>clonable-increment</code>s with suffixes <code>-id</code> and <code>-name</code> which corresponds with the input tag's <code>id=attr_1</code> and <code>name="attr[0]"</code>. Performing a clone, therefore will result in</p>
+	<!-- start sample clone -->
+	<pre><code>
+	&lt;input id="attr_1" class="clonable-increment-id clonable-increment-name" type="text" name="attr[0]"&gt;
+	&lt;input id="attr_2" class="clonable-increment-id clonable-increment-name" type="text" name="attr[1]"&gt;
+	</code></pre>
+	<!-- end sample clone -->
+	<div class="clonable-block" data-toggle="cloner">
+		<div class="clonable form-group" data-clone-number="1">
+			<input type="text" id="attr_1" name="attr[0]" class="clonable-increment-id clonable-increment-name form-control">
+		</div>
+		<button class="btn btn-default clonable-button-add"><i class="fa fa-plus"></i></button>
+	</div>
+									<p>Notice the cloned input have an <code>id=attr_2</code> and <code>name="attr[1]"</code>, incremented from the cloned html.</p>
+								</div>
+							</div>
+
+							<p><strong>decrementName</strong> - The reverse of increment. <strong><em>Note:</em></strong> this is unimplemented yet.</p>
+							<p><strong>beforeToggle</strong> - this is a function callback you can hook into before the `cloning` action is fired. It accepts parameters <code>$clone</code>( the clone of the last <code>clonable</code>), <code>index</code> (the <code>clonables</code>' length), and <code>self</code> (a catch-all reference of the <strong>jQuery-Cloner</strong> itself).</p>
+							<div class="row">
+								<div class="col-sm-11 col-sm-offset-1">
+									<p>An example use case:</p>
+	<!-- start sample beforeToggle -->
+	<pre><code>
+	// html
+	&lt;div id="beforeToggle" class="clonable-block"&gt;
+		&lt;label for="email_1"&gt;Emails&lt;/label&gt;
+		&lt;div class="clonable"&gt;
+			&lt;div class="form-group"&gt;
+				&lt;div class="row"&gt;
+					&lt;div class="col-sm-10"&gt;
+						&lt;input id="email_1" type="email" class="form-control clonable-increment-id clonable-increment-placeholder" placeholder="Email #1"&gt;
+					&lt;/div&gt;
+					&lt;div class="col-sm-2"&gt;
+						&lt;button class="btn btn-default clonable-button-close"&gt;&lt;i class="fa fa-close"&gt;&lt;/i&gt;&lt;/button&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;button class="btn btn-success clonable-button-add"&gt;Add Email&lt;/button&gt;
+	&lt;/div&gt;
+	</code></pre>
+	<pre><code>
+	// main.js
+	$('#beforeToggle').cloner({
+	    beforeToggle: function ($clone, i, self) {
+	        // console.log(self);
+			var $container = self.$container;
+			if ($clone.find('input:last').val() == "") {
+			    $container.css({border:'1px solid red'});
+			    alert('The last input is empty');
+			} else {
+				$container.css({border:'none'});
+			}
+	    },
+	});
+	</code></pre>
+	<div id="beforeToggle" class="clonable-block">
+		<label for="email_1">Emails</label>
+		<div class="clonable">
+			<div class="form-group">
+				<div class="row">
+					<div class="col-sm-10">
+						<input id="email_1" type="email" class="form-control clonable-increment-id clonable-increment-placeholder" placeholder="Email #1">
+					</div>
+					<div class="col-sm-2">
+						<button class="btn btn-default clonable-button-close"><i class="fa fa-close"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button class="btn btn-success clonable-button-add">Add Email</button>
+	</div>
+	<!-- end sample beforeToggle -->
+								</div>
+							</div>
+							<p><strong>afterToggle</strong> - this will fire <em>after</em> the <code>cloning</code> action is triggered.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="deployment" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Deployment</h1>
+							<p>Copy the <code>/dist/*.js</code> files to your desired location inside your project</p>
+							<p>or <code>&lt;script src="jquery-cloner/dist/jquery.cloner.min.js"&gt;&lt;/script&gt;</code> after jQuery.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="versioning" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Versioning</h1>
+							<p>The project uses <a href="http://semver.org/">SemVer</a> for versioning. For the versions available, see the tags on this repository.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="authors" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Authors</h1>
+							<ul>
+								<li>John Lioneil Dionisio</li>
+							</ul>
+							<p>See also the list of <a href="#">contributors</a> who participated in this project.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="license" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>License</h1>
+							<p>Please see the <a href="https://raw.githubusercontent.com/lioneil/jquery-cloner/master/LICENSE">MIT License</a>.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="acknowledgment" class="section">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>Acknowledgment</h1>
+							<ul>
+								<li>Everyone over at <a href="http://stackoverflow.com/search?q=jquery-cloner" target="_blank">stack<strong>overflow</strong></a>, and other various resources.</li>
+								<li>To the Muses of Inspiration</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</main>
+
+	<footer class="footer">
+		<div class="container">
+			<div class="col-sm-12">
+				<small>jQuery Cloner copyright &copy; <span data-year="2016" class="year">2016</span>. All rigths reserved.</small>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="vendor/jquery-cloner/dist/jquery.cloner.min.js"></script>
+		<script>
+			$('#beforeToggle').cloner({
+			    beforeToggle: function ($clone, i, self) {
+			        // console.log(self);
+					var $container = self.$container;
+					if ($clone.find('input:last').val() == "") {
+					    $container.css({border:'1px solid red'});
+					    alert('The last input is empty');
+					} else {
+						$container.css({border:'none'});
+					}
+			    },
+			});
+			(function ($) {
+
+				var old_year = $('.year').data('year');
+				var now_year = new Date().getFullYear();
+				$('.year').html(old_year == now_year ? now_year : old_year + " - " + now_year);
+
+			})(jQuery);
+			(function ($) {
+				var menu = document.querySelector('.sidebar-sticky')
+				var menuPosition = menu.getBoundingClientRect().top;
+				window.addEventListener('scroll', function() {
+				    if (window.pageYOffset >= menuPosition) {
+				        menu.style.position = 'fixed';
+				        menu.style.top = '0';
+				    } else {
+				        menu.style.position = 'static';
+				        menu.style.top = '';
+				    }
+				});
+			})(jQuery);
+		</script>
+	</footer>
+
+</body>
+</html>
