@@ -27,5 +27,8 @@
   "homepage": "https://github.com/lioneil/jquery-cloner#readme",
   "dependencies": {
     "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
   }
 }
