@@ -24,33 +24,6 @@
 
 	<div style="margin-top:1rem"></div>
 
-	<p><strong>Link jQuery Cloner</strong></p>
-	<pre>
-	<code>
-		&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">&lt;/script&gt;
-		&lt;script src="jquery-cloner/dist/jquery-cloner.min.js"&gt;&lt;/script&gt;
-	</code>
-	</pre>
-
-	<p><strong>Write the Markup (this is using default classes used by jQuery Cloner)</strong></p>
-	<pre>
-	<code>
-		&lt;div class="clonable-block" data-toggle="cloner"&gt;
-			&lt;div class="clonable"&gt;
-				&lt;label&gt;Attributes&lt;/label&gt;
-				&lt;input type="text" name="attr[]"&gt;
-				&lt;button type="button" class="clonable-close-button"&gt;Delete&lt;/button&gt;
-				&lt;br&gt;
-				&lt;br&gt;
-			&lt;/div&gt;
-			&lt;br&gt;
-			&lt;button type="button" class="clonable-button-add"&gt;Add Attributes&lt;/button&gt;
-
-		&lt;/div&gt;
-	</code>
-	</pre>
-	<p>Note: The <code>data-toggle="cloner"</code> is the default attribute to initialize the plugin</p>
-
 	<fieldset >
 		<legend><strong>Here's the Result</strong></legend>
 		<div class="clonable-block" data-toggle="cloner">
@@ -62,29 +35,17 @@
 
 		    <button class="clonable-button-add" type="button">Add Attributes</button>
 		</div>
+
+		<div class="clonable-block" data-toggle="cloner">
+			<div class="clonable" data-clone-number="1">
+		    	<label for="attr_1" class="clonable-increment-for">Something Else <span class="clonable-increment-html">1</span></label>
+		        <input id="attr_1" class="clonable-increment-id clonable-increment-name" type="text" name="attr[0]">
+		        <button type="button" class="clonable-button-close">Delete</button>
+		    </div>
+
+		    <button class="clonable-button-add" type="button">Add Something Else</button>
+		</div>
 	</fieldset>
-
-	<br><br><br>
-
-	Here's the default options and events for the plugin
-	<pre>
-	<code>$('.my-clonable').clonable({
-	clonableContainer: '.clonable-block',
-    clonable: '.clonable',
-    addButton: '.clonable-button-add',
-    closeButton: '.clonable-button-close',
-	repeatableContainer: '.repeatable-block',
-    repeatable: '.repeatable',
-    addButton: '.repeatable-button-add',
-    closeButton: '.repeatable-close-button',
-    focusableElement: 'input:first',
-    clearValueOnClone: true,
-    debug: false,
-
-    beforeToggle: function (clone, index, self) {},
-    afterToggle: function (clone, index, self) {}
-});</code>
-	</pre>
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

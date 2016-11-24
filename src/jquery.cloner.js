@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.2.1
+ * v1.2.2
  *
  * @param  {Object} $
  * @param  {Object} document
@@ -28,7 +28,6 @@
 
         toggle: function (options, self) {
             this.debug("start click--------------------------------");
-            self.$clonables = $(document).find(self.options.clonableContainer + " " + self.options.clonable); // Important: redo the clonables search here, so we know its the latest count
             var clonables = self.$clonables;
             var index = clonables.length;
             var $last = clonables.last();
@@ -190,8 +189,12 @@
         return this.each(function () {
             var self = cloner.init(options, this);
 
-            addButton = $(self.elem).find(self.options.addButton);
-            addButton.click(function (e) {
+            addButton = self.$elem.find(self.options.addButton);
+            addButton.on('click', function (e) {
+                // Important: redo the clonables search here, so we know its the latest count
+                // Also it is crucial to make the `addButton` the starting point in finding the `clonables`
+                // This makes multiple instance possible.
+                self.$clonables = $(this).parents(self.options.clonableContainer).find(self.options.clonable);
                 cloner.toggle(self.options, self);
             });
 
