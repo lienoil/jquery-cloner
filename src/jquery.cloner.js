@@ -8,6 +8,8 @@
  */
 (function ($, document) {
 
+    "use strict";
+
 	var Cloner = {
         init: function (options, elem) {
         	var self = this;
@@ -15,10 +17,11 @@
             self.$elem = $(self.elem);
             self.options = $.extend({}, $.fn.cloner.options, options);
             self.$container = self.$elem;
-            self.$clonables = self.$container.find(self.options.clonable);
-            self.$closeButton = self.$container.find(self.options.closeButton);
+            self.$clonables = self.$container.closestChild(self.options.clonable);
+            console.log(self.$clonables);
+            self.$closeButton = self.$container.closestChild(self.options.closeButton);
 
-            self.$closeButton.hide();
+            self.$closeButton.first().hide();
 
             this.debug("--------------------------------");
             this.debug("[Cloner]: initialized");
@@ -27,17 +30,17 @@
         },
 
         toggle: function (options, self) {
-            this.debug("start click--------------------------------");
             var clonables = self.$clonables;
+            this.debug("start click--------------------------------");
             var index = clonables.length;
             var $last = clonables.last();
             self.$last = $last;
-            var $clone = $last.clone();
+            var $clone = $last.clone(true); // true - clone even the bound event
+            self.$clone = $clone;
 
             self.debug("[Cloner]: start `beforeToggle` method");
             self.options.beforeToggle($clone, index, self);
             self.debug("[Cloner]: end `beforeToggle` method");
-
 
             self.debug("[Cloner]: start `toggle` method");
 
@@ -46,13 +49,18 @@
                 $clone.find('textarea').text('');
             }
             // $clone.find('input[name="attr['+(index - 1)+'][key]"], select[name="attr['+(index - 1)+'][key]"]').attr('name', 'attr['+index+'][key]');
-            $clone.find(self.options.closeButton).show();
+            /**
+             * Show the Close button.
+             *
+             */
+            $clone.closestChild(self.options.closeButton).show();
 
             // This is it
             // insert it after the last
-            $clone.find(self.options.closeButton).show();
+
             this.increment($clone, index, self);
             this.decrement($clone, index, self);
+            this.resetValuesOfNestedClone(self, index);
             self.debug("[Cloner]: start clone append");
             $last.after($clone);
             self.debug("[Cloner]: end clone append");
@@ -164,6 +172,13 @@
             r.debug("[Cloner]: end increment ");
         },
 
+        resetValuesOfNestedClone: function (self, index) {
+            if(self.options.resetValuesOfNestedClone) {
+                var nestedClonables = self.$clonables.find(self.options.clonable);
+            }
+            return self;
+        },
+
         destroy: function () {
         	this.destroy();
         	this.element.unbind( this.eventNamespace )
@@ -189,23 +204,52 @@
         return this.each(function () {
             var self = cloner.init(options, this);
 
-            addButton = self.$elem.find(self.options.addButton);
-            addButton.on('click', function (e) {
+            var addButton = self.$elem.closestChild(self.options.addButton);
+            $(addButton).on('click', function (e) {
+            console.log(addButton.attr('id'));
                 // Important: redo the clonables search here, so we know its the latest count
                 // Also it is crucial to make the `addButton` the starting point in finding the `clonables`
                 // This makes multiple instance possible.
-                self.$clonables = $(this).parents(self.options.clonableContainer).find(self.options.clonable);
+                self.$clonables = $(this).closest(self.options.clonableContainer).closestChild(self.options.clonable);
+                // console.log("CLOSEST PARENT", $(this).closest(self.options.clonableContainer));
+                // console.log("CHILDREB CHILDREN", self.$clonables);
                 cloner.toggle(self.options, self);
+                e.preventDefault();
             });
 
             cloner.remove(function (self) {
                 $(document).on("click", self.options.closeButton, function (e) {
-                    $(this).parents(self.options.clonable).remove();
+                    $(this).closest(self.options.clonable).remove();
                 });
                 return true;
             });
 
         });
+    };
+
+    /**
+     * jquery.closestchild 0.1.1
+     *
+     * Author: Andrey Mikhaylov aka lolmaus
+     * Email: lolmaus@gmail.com
+     *
+     */
+    $.fn.closestChild = function (selector) {
+        var $children, $results;
+
+        $children = this.children();
+
+        if ($children.length === 0) {
+            return $();
+        }
+
+        $results = $children.filter(selector);
+
+        if ($results.length > 0) {
+            return $results;
+        } else {
+            return $children.closestChild(selector);
+        }
     };
 
     $.fn.cloner.options = {
@@ -214,7 +258,10 @@
         addButton: '.clonable-button-add',
         closeButton: '.clonable-button-close',
         focusableElement: 'input:first',
+
         clearValueOnClone: true,
+        resetValuesOfNestedClone: true,
+
         debug: false,
 
         incrementName: 'clonable-increment',
@@ -223,6 +270,7 @@
         beforeToggle: function (clone, index, self) {},
         afterToggle: function (clone, index, self) {},
     };
-    $('[data-toggle=cloner]').cloner();
+
+    $(document).find('[data-toggle=cloner]').cloner();
 
 })(jQuery, document);
