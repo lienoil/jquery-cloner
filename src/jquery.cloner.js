@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.3.0
+ * v1.3.1
  *
  * @param  {Object} $
  * @param  {Object} document
@@ -70,7 +70,15 @@
                 $last.attr('data-clone-number', index);
             }
 
-            var cloneNumber = $last.data('clone-number');
+            /**
+             * Used .attr, because for some reason
+             * using .data doesn't work. maybe because .data
+             * is not getting the latest changes?
+             *
+             * Also, used the `+` sign to parse as int
+             *
+             */
+            var cloneNumber = +$last.attr('data-clone-number');
 
             /**
              * Toggle class, flagging this as a replicant, I mean a clone.
@@ -83,25 +91,25 @@
             self.cloneNumber = cloneNumber;
 
             /**
+             * If we are decrementing,
+             * stop when limitCloneNumbers == true and
+             * clone's clone-number is decrementable.
+             *
+             */
+            if (self.options.limitCloneNumbers && self.$clone.hasClass(self.options.clonableCloneNumberDecrement) && self.cloneNumber === 1) {
+                return true;
+            }
+
+            /**
              * First, Let's check the `data-clone-number`,
              * If it a number greater than 1, then
              * it means we should be decrementing.
              *
              */
             if (self.cloneNumber == 1) {
-                this.cloneNumberHandler(self.cloneNumber, 'increment', self);
-            } else {
-                this.cloneNumberHandler(self.cloneNumber, 'decrement', self);
-            }
-
-            /**
-             * If we are decrementing,
-             * stop when limitCloneNumbers == true and
-             * clone's clone-number is decrementable.
-             *
-             */
-            if (self.options.limitCloneNumbers && self.$clone.hasClass("clonable-clone-number-decrement") && self.cloneNumber === 1) {
-                return true;
+                this.cloneNumberHandler(self.cloneNumber, self.$clone, 'increment');
+            } else if (self.cloneNumber > 1) {
+                this.cloneNumberHandler(self.cloneNumber, self.$clone, 'decrement');
             }
 
             /**
@@ -179,21 +187,21 @@
             return true;
         },
 
-        cloneNumberHandler: function (cloneNumber, type, self) {
+        cloneNumberHandler: function (cloneNumber, $clone, type) {
             if (type == 'increment') {
                 /**
                  * Increment data-clone-number
                  * If the attribute do not exist, create.
                  *
                  */
-                self.$clone.attr('data-clone-number', cloneNumber + 1);
+                $clone.attr('data-clone-number', cloneNumber + 1);
             } else if (type == 'decrement') {
                 /**
                  * Decrement data-clone-number
                  * If the attribute do not exist, create.
                  *
                  */
-                self.$clone.attr('data-clone-number', cloneNumber - 1);
+                $clone.attr('data-clone-number', cloneNumber - 1);
             }
         },
 
@@ -233,20 +241,20 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var old_num = +old_val.match(/\d/g).join("") + 1;
-                                $(this).val(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
+                                $(this).val(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var old_num = +old_val.match(/\d/g).join("") + 1;
-                                $(this).html(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
+                                $(this).html(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var old_num = +old_val.match(/\d/g).join("") + 1;
-                                $(this).text(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
+                                $(this).text(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'for':
@@ -254,8 +262,8 @@
                             case 'class':
                             default:
                                 var old_val = $(this).attr(attr);
-                                var old_num = +old_val.match(/\d/g).join("") + 1;
-                                $(this).attr(attr, old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
+                                $(this).attr(attr, old_val.replace(/-?\d+/, old_num));
                                 break;
                         }
                     }
@@ -304,20 +312,20 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).val(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
+                                $(this).val(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).html(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
+                                $(this).html(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).text(old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
+                                $(this).text(old_val.replace(/-?\d+/, old_num));
                                 break;
 
                             case 'for':
@@ -325,8 +333,8 @@
                             case 'class':
                             default:
                                 var old_val = $(this).attr(attr);
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).attr(attr, old_val.replace(/\d+/, old_num));
+                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
+                                $(this).attr(attr, old_val.replace(/-?\d+/, old_num));
                                 break;
                         }
                     }
@@ -440,6 +448,8 @@
 
         cloneName: 'clonable-clone',
         sourceName: 'clonable-source',
+
+        clonableCloneNumberDecrement: 'clonable-clone-number-decrement',
 
         incrementName: 'clonable-increment',
         decrementName: 'clonable-decrement',
