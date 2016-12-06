@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>jQuery Cloner</title>
+	<title>jQuery Cloner Test</title>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		html, body {
@@ -28,9 +28,8 @@
 	<div class="container">
 		<div class="col-sm-12 form-horizontal">
 
-
 			<div class="clonable-block" data-toggle="cloner">
-				<div class="clonable" data-clone-number="1">
+				<div class="clonable" data-ss="1">
 					<div class="row">
 						<div class="col-sm-10">
 							<div class="form-group row">
@@ -54,9 +53,9 @@
 									        </div>
 									    </div>
 									    <div class="clonable form-group row" data-clone-number="1">
-									    	<label for="attr_1" class="col-sm-2 clonable-increment-for">Child <span class="clonable-increment-html">#1</span></label>
+									    	<label for="attr_2" class="col-sm-2 clonable-increment-for">Child <span class="clonable-increment-html">#2</span></label>
 									        <div class="col-sm-9">
-									        	<input id="attr_1" class="form-control clonable-increment-id clonable-increment-name" type="text" name="attr[0]">
+									        	<input id="attr_2" class="form-control clonable-increment-id clonable-increment-name" type="text" name="attr[1]">
 									        </div>
 									        <div class="col-sm-1">
 									        	<button type="button" class="btn btn-danger clonable-button-close">Delete</button>
@@ -65,6 +64,21 @@
 									    <button id="sad" class="clonable-button-add btn btn-default" type="button">Add Child</button>
 									</div>
 									<!-- end attr -->
+									<br><br>
+									<!-- top ten songs -->
+									<div class="clonable-block" data-toggle="cloner">
+										<div class="clonable form-group row clonable-clone-number-decrement" data-clone-number="3">
+									    	<label for="songs_1" class="col-sm-2 clonable-increment-for">Top <span class="clonable-decrement-html">3</span> Songs</label>
+									        <div class="col-sm-9">
+									        	<input id="songs_1" class="form-control clonable-increment-id clonable-increment-name" type="text" name="attr[0]">
+									        </div>
+									        <div class="col-sm-1">
+									        	<button type="button" class="btn btn-danger clonable-button-close">Delete</button>
+									        </div>
+									    </div>
+									    <button class="clonable-button-add btn btn-default" type="button">Add Song</button>
+									</div>
+									<!-- top ten songs -->
 						        </div>
 					        </div>
 						</div>

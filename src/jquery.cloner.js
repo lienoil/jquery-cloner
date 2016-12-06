@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.2.3
+ * v1.3.3
  *
  * @param  {Object} $
  * @param  {Object} document
@@ -8,19 +8,35 @@
  */
 (function ($, document) {
 
-    "use strict";
+    'use strict';
 
 	var Cloner = {
         init: function (options, elem) {
+            /**
+             * Store Cloner to a variable
+             *
+             * @type Object
+             */
         	var self = this;
             self.elem = elem;
             self.$elem = $(self.elem);
             self.options = $.extend({}, $.fn.cloner.options, options);
             self.$container = self.$elem;
             self.$clonables = self.$container.closestChild(self.options.clonable);
-            console.log(self.$clonables);
             self.$closeButton = self.$container.closestChild(self.options.closeButton);
 
+            /**
+             * Add class to distinguish the `original clonables`.
+             * This will be helpful later when removing clones.
+             *
+             */
+            self.$clonables.addClass(self.options.sourceName);
+
+            /**
+             * Hide All first instance of the closeButton
+             * per Clonable Block.
+             *
+             */
             self.$closeButton.first().hide();
 
             this.debug("--------------------------------");
@@ -30,106 +46,183 @@
         },
 
         toggle: function (options, self) {
-            var clonables = self.$clonables;
             this.debug("start click--------------------------------");
+
+            /**
+             * Define variables for use
+             * for this method.
+             *
+             */
+            var clonables = self.$clonables;
             var index = clonables.length;
             var $last = clonables.last();
-            self.$last = $last;
-            var $clone = $last.clone(true); // true - clone even the bound event
-            self.$clone = $clone;
+            var $clone = $last.clone(true); // true - clone even the bound events on the element
 
+            /**
+             * Check if the `data-clone-number` attribute is present.
+             * If not the attribute is not found, then this adds it.
+             * Spoiler Alert: This step is not important, really. But it might be! If you let it!
+             *
+             * @param  !$last[0].hasAttribute('clone-number') check if attribute is present.
+             * @return Boolean
+             */
+            if (!$last[0].hasAttribute('data-clone-number')) {
+                $last.attr('data-clone-number', index);
+            }
+
+            var cloneNumber = $last.data('clone-number');
+
+            /**
+             * Toggle class, flagging this as a replicant, I mean a clone.
+             *
+             */
+            $clone.removeClass(self.options.sourceName).addClass(self.options.cloneName);
+
+            self.$last = $last;
+            self.$clone = $clone;
+            self.cloneNumber = cloneNumber;
+
+            /**
+             * First, Let's check the `data-clone-number`,
+             * If it a number greater than 1, then
+             * it means we should be decrementing.
+             *
+             */
+            if (self.cloneNumber == 1) {
+                this.cloneNumberHandler(self.cloneNumber, 'increment', self);
+            } else {
+                this.cloneNumberHandler(self.cloneNumber, 'decrement', self);
+            }
+
+            /**
+             * If we are decrementing,
+             * stop when limitCloneNumbers == true and
+             * clone's clone-number is decrementable.
+             *
+             */
+            if (self.options.limitCloneNumbers && self.$clone.hasClass("clonable-clone-number-decrement") && self.cloneNumber === 1) {
+                return true;
+            }
+
+            /**
+             * Perform the `beforeToggle` method.
+             *
+             */
             self.debug("[Cloner]: start `beforeToggle` method");
             self.options.beforeToggle($clone, index, self);
             self.debug("[Cloner]: end `beforeToggle` method");
 
+            /**
+             * Perform the start of `toggle` method.
+             *
+             */
             self.debug("[Cloner]: start `toggle` method");
 
             if (self.options.clearValueOnClone) {
                 $clone.find('input, select').val('');
                 $clone.find('textarea').text('');
             }
-            // $clone.find('input[name="attr['+(index - 1)+'][key]"], select[name="attr['+(index - 1)+'][key]"]').attr('name', 'attr['+index+'][key]');
+
             /**
              * Show the Close button.
              *
              */
             $clone.closestChild(self.options.closeButton).show();
 
-            // This is it
-            // insert it after the last
-
+            /**
+             * Perform the incrementations
+             * and/or decrementations.
+             *
+             */
             this.increment($clone, index, self);
             this.decrement($clone, index, self);
-            this.resetValuesOfNestedClone(self, index);
+
+            /**
+             * Perform values reset.
+             *
+             */
+            this.nestedClonesHandler($clone, index, self);
+
             self.debug("[Cloner]: start clone append");
+
+            /**
+             * -------------------------------------
+             * THIS IS IT
+             * -------------------------------------
+             * This is the magic line that adds the
+             * cloned element next to the last instance
+             * of the element on the DOM.
+             *
+             */
             $last.after($clone);
+
             self.debug("[Cloner]: end clone append");
+
+            /**
+             * Focus on the element specified.
+             *
+             */
             $clone.find(self.options.focusableElement).focus();
 
             self.debug("[Cloner]: end `toggle` method");
 
-
+            /**
+             * Perform the `afterToggle` method.
+             *
+             */
             self.debug("[Cloner]: start `afterToggle` method");
             self.options.afterToggle($clone, index, self);
             self.debug("[Cloner]: end `afterToggle` method");
+
             this.debug("end click--------------------------------");
 
             return true;
         },
 
-        decrement: function ($clone, index, self) {
-            var r = this;
-            var decrementables = self.$container.find('[class*="'+self.options.decrementName+'"]');
-            var _i_ = $clone.data('clone-number');
-            r.debug("[Cloner]: start decrement | Clone number: " + _i_ + " | Index: " + index);
-            decrementables.each(function () {
-                var classes = $(this).attr('class').split(' ');
-                for (var i = classes.length - 1; i >= 0; i--) {
-                    var reg = new RegExp(self.options.decrementName, "g");
-                    if (reg.test(classes[i])) {
-                        var attr = classes[i].split(self.options.decrementName);
-                        attr = attr[1].replace('-', '');
-                        switch (attr) {
-                            case 'value':
-                                var old_val = $(this).val();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).val(old_val.replace(/\d+/, old_num));
-                                break;
-
-                            case 'html':
-                                var old_val = $(this).html();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).html(old_val.replace(/\d+/, old_num));
-                                break;
-
-                            case 'text':
-                                var old_val = $(this).text();
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).text(old_val.replace(/\d+/, old_num));
-                                break;
-
-                            case 'for':
-                            case 'id':
-                            case 'class':
-                            default:
-                                var old_val = $(this).attr(attr);
-                                var old_num = +old_val.match(/\d/g).join("") - 1;
-                                $(this).attr(attr, old_val.replace(/\d+/, old_num));
-                                break;
-                        }
-                    }
-                }
-                r.debug("[Cloner]: decrementing values... | Clone Number: " +_i_);
-            });
-            r.debug("[Cloner]: end decrement ");
+        cloneNumberHandler: function (cloneNumber, type, self) {
+            if (type == 'increment') {
+                /**
+                 * Increment data-clone-number
+                 * If the attribute do not exist, create.
+                 *
+                 */
+                self.$clone.attr('data-clone-number', cloneNumber + 1);
+            } else if (type == 'decrement') {
+                /**
+                 * Decrement data-clone-number
+                 * If the attribute do not exist, create.
+                 *
+                 */
+                self.$clone.attr('data-clone-number', cloneNumber - 1);
+            }
         },
 
         increment: function ($clone, index, self) {
+            /**
+             * Instance of the Cloner Object
+             *
+             * @type Object
+             */
             var r = this;
-            $clone.attr('data-clone-number', self.$last.data('clone-number') + 1);
-            var incrementables = $clone.find('[class*="'+self.options.incrementName+'"]');
-            var _i_ = $clone.data('clone-number');
-            r.debug("[Cloner]: start increment | Clone number: " + _i_ + " | Index: " + index);
+
+            /**
+             * All valid incrementables
+             *
+             * @type Object
+             */
+            var incrementables = $clone.find('[class*="'+self.options.incrementName+'"]').filter(function (i, e) {
+                return $(e).closest(self.options.clonable).get(0) == $clone.get(0);
+            });
+
+            /**
+             * The clone ID of the current Clone.
+             *
+             * @type int
+             */
+            var _i = $clone[0].hasAttribute('clone-number') ? $clone.data('clone-number') : index;
+
+            r.debug("[Cloner]: start increment | Clone number: " + _i + " | Index: " + index);
+
             incrementables.each(function () {
                 var classes = $(this).attr('class').split(' ');
                 for (var i = classes.length - 1; i >= 0; i--) {
@@ -167,15 +260,96 @@
                         }
                     }
                 }
-                r.debug("[Cloner]: incrementing values... | Clone Number: " +_i_);
+
+                r.debug("[Cloner]: incrementing values... | Clone Number: " +_i);
+
             });
+
             r.debug("[Cloner]: end increment ");
         },
 
-        resetValuesOfNestedClone: function (self, index) {
-            if(self.options.resetValuesOfNestedClone) {
-                var nestedClonables = self.$clonables.find(self.options.clonable);
+        decrement: function ($clone, index, self) {
+            /**
+             * Instance of the Cloner Object
+             *
+             * @type Object
+             */
+            var r = this;
+
+            /**
+             * All valid decrementables
+             *
+             * @type Object
+             */
+            var decrementables = $clone.find('[class*="'+self.options.decrementName+'"]').filter(function (i, e) {
+                return $(e).closest(self.options.clonable).get(0) == $clone.get(0);
+            });
+
+            /**
+             * The clone ID of the current Clone.
+             *
+             * @type int
+             */
+            var _i = $clone[0].hasAttribute('clone-number') ? $clone.data('clone-number') : index;
+
+            r.debug("[Cloner]: start increment | Clone number: " + _i + " | Index: " + index);
+
+            decrementables.each(function () {
+                var classes = $(this).attr('class').split(' ');
+                for (var i = classes.length - 1; i >= 0; i--) {
+                    var reg = new RegExp(self.options.decrementName, "g");
+                    if (reg.test(classes[i])) {
+                        var attr = classes[i].split(self.options.decrementName);
+                        attr = attr[1].replace('-', '');
+                        switch (attr) {
+                            case 'value':
+                                var old_val = $(this).val();
+                                var old_num = +old_val.match(/\d/g).join("") - 1;
+                                $(this).val(old_val.replace(/\d+/, old_num));
+                                break;
+
+                            case 'html':
+                                var old_val = $(this).html();
+                                var old_num = +old_val.match(/\d/g).join("") - 1;
+                                $(this).html(old_val.replace(/\d+/, old_num));
+                                break;
+
+                            case 'text':
+                                var old_val = $(this).text();
+                                var old_num = +old_val.match(/\d/g).join("") - 1;
+                                $(this).text(old_val.replace(/\d+/, old_num));
+                                break;
+
+                            case 'for':
+                            case 'id':
+                            case 'class':
+                            default:
+                                var old_val = $(this).attr(attr);
+                                var old_num = +old_val.match(/\d/g).join("") - 1;
+                                $(this).attr(attr, old_val.replace(/\d+/, old_num));
+                                break;
+                        }
+                    }
+                }
+
+                r.debug("[Cloner]: incrementing values... | Clone Number: " +_i);
+
+            });
+
+            r.debug("[Cloner]: end increment ");
+        },
+
+        nestedClonesHandler: function ($clone, index, self) {
+            /**
+             * Remove all Nested Clones' clone.
+             * This will revert the nested clone to it's original elements.
+             *
+             */
+            if (self.options.removeNestedClonablesOnClone) {
+                var nestedClonables = $clone.closestChild(self.options.clonable);
+                nestedClonables.not("." + self.options.sourceName).remove();
             }
+
             return self;
         },
 
@@ -205,14 +379,13 @@
             var self = cloner.init(options, this);
 
             var addButton = self.$elem.closestChild(self.options.addButton);
+
             $(addButton).on('click', function (e) {
-            console.log(addButton.attr('id'));
                 // Important: redo the clonables search here, so we know its the latest count
                 // Also it is crucial to make the `addButton` the starting point in finding the `clonables`
-                // This makes multiple instance possible.
+                // This makes multiple instance possible, coupled with the custom `closesChild` method.
                 self.$clonables = $(this).closest(self.options.clonableContainer).closestChild(self.options.clonable);
-                // console.log("CLOSEST PARENT", $(this).closest(self.options.clonableContainer));
-                // console.log("CHILDREB CHILDREN", self.$clonables);
+
                 cloner.toggle(self.options, self);
                 e.preventDefault();
             });
@@ -257,12 +430,16 @@
         clonable: '.clonable',
         addButton: '.clonable-button-add',
         closeButton: '.clonable-button-close',
-        focusableElement: 'input:first',
+        focusableElement: ':input:visible:enabled:first',
 
         clearValueOnClone: true,
-        resetValuesOfNestedClone: true,
+        removeNestedClonablesOnClone: true,
+        limitCloneNumbers: true,
 
         debug: false,
+
+        cloneName: 'clonable-clone',
+        sourceName: 'clonable-source',
 
         incrementName: 'clonable-increment',
         decrementName: 'clonable-decrement',

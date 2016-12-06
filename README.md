@@ -100,7 +100,7 @@ In this example, we have classes of `clonable-increment`s with suffixes `-id` an
 ```
 It does this using `regex`.
 
-**decrementName** - The reverse of increment. *Important* this is unimplemented yet (as of v1.1.0).
+**decrementName** - The reverse of increment.
 
 **beforeToggle** - this is a function callback you can hook into before the `cloning` action is fired. It accepts parameters `$clone`( the clone of the last `clonable`), `index` (the `clonables`' length), and `self` (a catch-all reference of the jQuery-Cloner itself). An example use case:
 ```
@@ -140,5 +140,6 @@ See also the list of [contributors](#) who participated in this project.
 
 
 ### Acknowledgment
+* Andrey Mikhaylov (aka lolmaus) for his [jquery.closestchild](https://github.com/lolmaus/jquery.closestchild)
 * Everyone over at stackoverflow, and other various resources.
 * to the Muses of Inspiration
