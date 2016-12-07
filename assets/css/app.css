@@ -26,3 +26,18 @@ footer {
 .sidebar-sticky {
 	padding-top: 2rem;
 }
+
+span code {
+	background-color: rgba(0,0,120,0.1);
+	color: rgba(0,0,120,0.5);
+}
+
+input.error {
+	border-color: maroon;
+}
+
+.after-toggle-container {
+	padding: 1rem;
+	display: block;
+	border: 1px solid rgba(0,0,0,0.1);
+}

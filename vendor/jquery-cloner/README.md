@@ -54,19 +54,23 @@ The plugin have options you can modify. Below is the list of options with their 
 
 ```
 $('#my-clonable-block').cloner({
-     clonableContainer: '.clonable-block',
-     clonable: '.clonable',
-     addButton: '.clonable-button-add',
-     closeButton: '.clonable-button-close',
-     focusableElement: 'input:first', // or any valid selector
-     clearValueOnClone: true, // or false
-     debug: false, // or true
+    clonableContainer: '.clonable-block',
+    clonable: '.clonable',
+    addButton: '.clonable-button-add',
+    closeButton: '.clonable-button-close',
+    focusableElement: ':input:visible:enabled:first',
 
-     incrementName: 'clonable-increment', // uses the suffixes -html, -id, and -{any attribute}.
-     decrementName: 'clonable-decrement', // #IMPORTANT: this option is unemplemented as of v1.1.0
+    clearValueOnClone: true,
+    removeNestedClonablesOnClone: true,
+    limitCloneNumbers: true,
 
-     beforeToggle: function (clone, index, self) {},
-     afterToggle: function (clone, index, self) {},
+    debug: false,
+
+    cloneName: 'clonable-clone',
+    sourceName: 'clonable-source',
+
+    incrementName: 'clonable-increment',
+    decrementName: 'clonable-decrement',
 });
 ```
 
@@ -81,6 +85,10 @@ $('#my-clonable-block').cloner({
 **focusableElement** - The attribute or input tag inside a newly cloned `clonable` to place the cursor over.
 
 **clearValueOnClone** - The plugin will clone the last instance of the `clonable` class. This option will toggle to remove or retain all previous input values.
+
+**removeNestedClonablesOnClone** - Toggle to remove all clone instances of the `clonableContainer`.
+
+**limitCloneNumbers** - Will only work for decrementing `clonables`.
 
 **debug** - Switch `console.log`ging on/off.
 
@@ -100,7 +108,7 @@ In this example, we have classes of `clonable-increment`s with suffixes `-id` an
 ```
 It does this using `regex`.
 
-**decrementName** - The reverse of increment. *Important* this is unimplemented yet (as of v1.1.0).
+**decrementName** - The reverse of increment.
 
 **beforeToggle** - this is a function callback you can hook into before the `cloning` action is fired. It accepts parameters `$clone`( the clone of the last `clonable`), `index` (the `clonables`' length), and `self` (a catch-all reference of the jQuery-Cloner itself). An example use case:
 ```
@@ -140,5 +148,6 @@ See also the list of [contributors](#) who participated in this project.
 
 
 ### Acknowledgment
-* Everyone over at stackoverflow, and other various resources.
+* Andrey Mikhaylov (aka lolmaus) for his [jquery.closestchild](https://github.com/lolmaus/jquery.closestchild)
+* Everyone over at [stackoverflow](http://stackoverflow.com/tags/jquery), and other various resources.
 * to the Muses of Inspiration
