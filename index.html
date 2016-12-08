@@ -576,8 +576,8 @@
             $('#afterToggle').cloner({
                 afterToggle: function ($clone, i, self) {
                     // console.log(self);
-                    $clone.find('.after-toggle-container').html('retrieving quote from quotesondesign.com...');
-                    $.getJSON("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=20&callback=", function(a) {
+                    $clone.find('.after-toggle-container').html('retrieving quote from quotesondesign.com... <small>If it takes too long, it might be blocked by your browser.</small>');
+                    $.getJSON("https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=20&callback=", function(a) {
                         // $("body").append(a[0].content + "<p>— " + a[0].title + "</p>")
                         var quote = Math.floor(Math.random() * a.length);
                         $clone.find('.after-toggle-container').html(a[quote].content + "<p>— " + a[quote].title + "</p>");
