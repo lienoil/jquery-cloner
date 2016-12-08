@@ -576,21 +576,27 @@
             $('#afterToggle').cloner({
                 afterToggle: function ($clone, i, self) {
                     // console.log(self);
-                    var quotes = [
-                        'This value is added using the `afterToggle` event',
-                        'This value is definitely added using the `afterToggle` event',
-                        'This is amazing.',
-                        'Simplicity is the ultimate sophistication',
-                        'People who think they know everything are a great annoyance to those of us who do',
-                        'is it?',
-                        "Outside of a dog, a book is man's best friend. Inside of a dog it's too dark to read",
-                        "I find television very educating. Every time somebody turns on the set, I go into the other room and read a book.",
-                        "Those are my principles, and if you don't like them...well I have others.",
-                        "Well, art is art, isn't it? Still, on the other hand, water is water! And east is east and west is west and if you take cranberries and stew them like applesauce they taste much more like prunes than rhubarb does. Now, uh... now you tell me what you know.",
-                        "This is a <em>simple</em> quote generator.",
-                    ];
-                    var quote = Math.floor(Math.random() * quotes.length);
-                    $clone.find('.after-toggle-container').html(quotes[quote]);
+                    $clone.find('.after-toggle-container').html('retrieving quote from quotesondesign.com...');
+                    $.getJSON("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=20&callback=", function(a) {
+                        // $("body").append(a[0].content + "<p>— " + a[0].title + "</p>")
+                        var quote = Math.floor(Math.random() * a.length);
+                        $clone.find('.after-toggle-container').html(a[quote].content + "<p>— " + a[quote].title + "</p>");
+                    });
+                    // var quotes = [
+                    //     'This value is added using the `afterToggle` event',
+                    //     'This value is definitely added using the `afterToggle` event',
+                    //     'This is amazing.',
+                    //     'Simplicity is the ultimate sophistication',
+                    //     'People who think they know everything are a great annoyance to those of us who do',
+                    //     'is it?',
+                    //     "Outside of a dog, a book is man's best friend. Inside of a dog it's too dark to read",
+                    //     "I find television very educating. Every time somebody turns on the set, I go into the other room and read a book.",
+                    //     "Those are my principles, and if you don't like them...well I have others.",
+                    //     "Well, art is art, isn't it? Still, on the other hand, water is water! And east is east and west is west and if you take cranberries and stew them like applesauce they taste much more like prunes than rhubarb does. Now, uh... now you tell me what you know.",
+                    //     "This is a <em>simple</em> quote generator.",
+                    // ];
+                    // var quote = Math.floor(Math.random() * quotes.length);
+                    // $clone.find('.after-toggle-container').html(quotes[quote]);
                 },
             });
             (function ($) {
