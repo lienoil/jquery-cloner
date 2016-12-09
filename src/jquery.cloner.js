@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.3.1
+ * v1.3.2
  *
  * @param  {Object} $
  * @param  {Object} document
@@ -261,6 +261,10 @@
                             case 'id':
                             case 'class':
                             default:
+                                if (!$(this)[0].hasAttribute(attr)) {
+                                    break;
+                                }
+
                                 var old_val = $(this).attr(attr);
                                 var old_num = +old_val.match(/-?\d/g).join("") + 1;
                                 $(this).attr(attr, old_val.replace(/-?\d+/, old_num));
