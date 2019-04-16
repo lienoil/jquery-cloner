@@ -1,6 +1,6 @@
 /**
  * jQuery Cloner
- * v1.3.2
+ * v1.3.3
  *
  * @param  {Object} $
  * @param  {Object} document
@@ -241,20 +241,20 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
-                                $(this).val(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                $(this).val(new_val);
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
-                                $(this).html(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                $(this).html(new_val);
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
-                                $(this).text(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                $(this).text(new_val);
                                 break;
 
                             case 'for':
@@ -266,8 +266,9 @@
                                 }
 
                                 var old_val = $(this).attr(attr);
-                                var old_num = +old_val.match(/-?\d/g).join("") + 1;
-                                $(this).attr(attr, old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+
+                                $(this).attr(attr, new_val);
                                 break;
                         }
                     }
@@ -316,20 +317,20 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
-                                $(this).val(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { console.log(n);return --n; });
+                                $(this).val(new_val);
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
-                                $(this).html(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { console.log(n);return --n; });
+                                $(this).html(new_val);
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
-                                $(this).text(old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { console.log(n);return --n; });
+                                $(this).text(new_val);
                                 break;
 
                             case 'for':
@@ -337,8 +338,8 @@
                             case 'class':
                             default:
                                 var old_val = $(this).attr(attr);
-                                var old_num = +old_val.match(/-?\d/g).join("") - 1;
-                                $(this).attr(attr, old_val.replace(/-?\d+/, old_num));
+                                var new_val = old_val.replace(/-?\d+/g, function (n) { console.log(n);return --n; });
+                                $(this).attr(new_val);
                                 break;
                         }
                     }
@@ -462,6 +463,8 @@
         afterToggle: function (clone, index, self) {},
     };
 
-    $(document).find('[data-toggle=cloner]').cloner();
+    $(document).find('[data-toggle=cloner]').each(function () {
+        $(this).cloner(Object.assign({}, $(this).data('options') || {}));
+    })
 
 })(jQuery, document);
