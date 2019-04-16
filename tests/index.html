@@ -27,6 +27,13 @@
 
 	<div class="container">
 		<div class="col-sm-12 form-horizontal">
+			<div class="clonable-block" data-toggle="cloner" data-options='{"clearValueOnClone":false}'>
+				<div class="clonable" data-ss="1">
+					<label for="" class="clonable-increment-html">1 2</label>
+					<input id="person_1" class="form-control clonable-decrement-value clonable-increment-placeholder" type="text" name="person[0]" placeholder="person[0][name][1]" value="5 4">
+				</div>
+				<button id="hap" class="clonable-button-add btn btn-primary" type="button">Add person</button>
+			</div>
 
 			<div class="clonable-block" data-toggle="cloner">
 				<div class="clonable" data-ss="1">
@@ -35,7 +42,7 @@
 							<div class="form-group row">
 						    	<label for="person_1" class="col-sm-2 clonable-increment-for">Person <span class="clonable-increment-html">#1</span></label>
 						        <div class="col-sm-10">
-						        	<input id="person_1" class="form-control clonable-increment-id clonable-increment-name" type="text" name="person[0]">
+						        	<input id="person_1" class="form-control clonable-increment-id clonable-increment-placeholder clonable-increment-name" type="text" name="person[0]" placeholder="person[0][name][1]">
 						        </div>
 						    </div>
 
@@ -96,8 +103,8 @@
 	</div>
 
 
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="../src/jquery.cloner.js"></script>
+	<script src="../dist/jquery.cloner.min.js"></script>
 </body>
 </html>
