@@ -241,19 +241,19 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return ++n; });
                                 $(this).val(new_val);
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return ++n; });
                                 $(this).html(new_val);
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return ++n; });
                                 $(this).text(new_val);
                                 break;
 
@@ -266,7 +266,7 @@
                                 }
 
                                 var old_val = $(this).attr(attr);
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return ++n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return ++n; });
 
                                 $(this).attr(attr, new_val);
                                 break;
@@ -317,19 +317,19 @@
                         switch (attr) {
                             case 'value':
                                 var old_val = $(this).val();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return --n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return --n; });
                                 $(this).val(new_val);
                                 break;
 
                             case 'html':
                                 var old_val = $(this).html();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return --n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return --n; });
                                 $(this).html(new_val);
                                 break;
 
                             case 'text':
                                 var old_val = $(this).text();
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return --n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return --n; });
                                 $(this).text(new_val);
                                 break;
 
@@ -338,7 +338,7 @@
                             case 'class':
                             default:
                                 var old_val = $(this).attr(attr);
-                                var new_val = old_val.replace(/-?\d+/g, function (n) { return --n; });
+                                var new_val = old_val.replace(/-?(\d+)(?!.*\d)/g, function (n) { return --n; });
                                 $(this).attr(new_val);
                                 break;
                         }
