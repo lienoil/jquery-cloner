@@ -129,6 +129,7 @@
             if (self.options.clearValueOnClone) {
                 $clone.find('input, select').val('');
                 $clone.find('textarea').val('');
+                $clone.find('input, radio').prop('checked', false);
             }
 
             /**
