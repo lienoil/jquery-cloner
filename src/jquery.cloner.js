@@ -128,7 +128,7 @@
 
             if (self.options.clearValueOnClone) {
                 $clone.find('input, select').val('');
-                $clone.find('textarea').text('');
+                $clone.find('textarea').val('');
             }
 
             /**
